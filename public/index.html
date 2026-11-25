@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Watch Together MVP</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <!-- hls.js для підтримки .m3u8 потоків у Chrome/Firefox/Edge -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Watch<span>Together</span></div>
+    <div class="room-controls">
+      <input id="nickInput" type="text" maxlength="24" placeholder="Твій нік" />
+      <button id="copyLinkBtn" type="button">Скопіювати лінк кімнати</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="media-bar">
+      <div class="url-group">
+        <input
+          id="urlInput"
+          type="text"
+          placeholder="Встав YouTube-посилання або прямий лінк на .mp4 / .m3u8"
+        />
+        <button id="loadUrlBtn" type="button">Завантажити</button>
+      </div>
+
+      <label class="file-btn">
+        Обрати файл з ПК
+        <input id="localFileInput" type="file" accept="video/*" hidden />
+      </label>
+    </section>
+
+    <section class="stage-card">
+      <div class="stage-wrapper" id="stageWrapper">
+        <div id="emptyState" class="empty-state">
+          Обери YouTube-відео, пряме посилання (.mp4 / .m3u8) або локальний файл із ПК
+        </div>
+
+        <!-- Контейнер для HTML5 <video> (прямі лінки та локальні файли) -->
+        <video id="htmlVideo" controls playsinline style="display: none;"></video>
+
+        <!-- Контейнер для YouTube IFrame API -->
+        <div id="ytPlayerContainer" style="display: none;"></div>
+
+        <!-- Оверлей для літаючих реакцій -->
+        <div id="reactionsLayer" class="reactions-layer" aria-hidden="true"></div>
+      </div>
+
+      <div class="custom-sync-bar">
+        <button id="syncPlayBtn" type="button">▶ Play</button>
+        <button id="syncPauseBtn" type="button">⏸ Pause</button>
+        <button id="forceSyncBtn" type="button">⟳ Синхронізувати</button>
+        <span id="syncStatus" class="sync-status">Статус: очікування</span>
+      </div>
+
+      <div class="reactions-bar">
+        <button class="reaction-btn" data-emoji="🔥" type="button">🔥</button>
+        <button class="reaction-btn" data-emoji="😂" type="button">😂</button>
+        <button class="reaction-btn" data-emoji="❤️" type="button">❤️</button>
+        <button class="reaction-btn" data-emoji="😮" type="button">😮</button>
+        <button class="reaction-btn" data-emoji="👏" type="button">👏</button>
+        <button class="reaction-btn" data-emoji="💀" type="button">💀</button>
+      </div>
+    </section>
+
+    <section class="chat-card">
+      <div id="chatMessages" class="chat-messages"></div>
+      <form id="chatForm" class="chat-form">
+        <input id="chatInput" type="text" maxlength="500" placeholder="Написати в чат..." autocomplete="off" />
+        <button type="submit">Надіслати</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
